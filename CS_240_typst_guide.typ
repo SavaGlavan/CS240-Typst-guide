@@ -11,8 +11,7 @@
 
 #show link: it => {
   set text(blue)
-  underline(it)
-}
+  underline(it)}
 
 #align(center, text(17pt)[
   *#title*
@@ -29,12 +28,12 @@
 
 #outline(indent: auto)
 #pagebreak()
-#include "section/introduction.typ"
+#include "sections/introduction.typ"
 #pagebreak()
-#include "section/pseudo_code.typ"
+#include "sections/pseudo_code.typ"
 #pagebreak()
-#include "section/trees.typ"
+#include "sections/trees.typ"
 #pagebreak()
-#include "section/skiplists.typ"
+#include "sections/skiplists.typ"
 #pagebreak()
-#include "section/contribution.typ"
+#include "sections/contribution.typ"
