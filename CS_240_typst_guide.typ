@@ -18,11 +18,18 @@
   *#title*
 ])
 
-#outline()
+#set heading(numbering: "1.")
+
+#show outline.entry.where(
+  level: 1
+): it => {
+  v(12pt, weak: true)
+  strong(it)
+}
+
+#outline(indent: auto)
 #pagebreak()
 #include "introduction.typ"
-#pagebreak()
-#include "formatting.typ"
 #pagebreak()
 #include "pseudo_code.typ"
 #pagebreak()
