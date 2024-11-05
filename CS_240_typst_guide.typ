@@ -29,12 +29,12 @@
 
 #outline(indent: auto)
 #pagebreak()
-#include "introduction.typ"
+#include "section/introduction.typ"
 #pagebreak()
-#include "pseudo_code.typ"
+#include "section/pseudo_code.typ"
 #pagebreak()
-#include "trees.typ"
+#include "section/trees.typ"
 #pagebreak()
-#include "skiplists.typ"
+#include "section/skiplists.typ"
 #pagebreak()
-#include "contribution.typ"
+#include "section/contribution.typ"
