@@ -44,6 +44,8 @@ The following is a function to automatically draw skip lists from an array of va
       }
     })
 }
+// this is all you have to change
+// every entry in the array is of the form (value, height)
 #let values = ((28, 1), (49, 5), (60, 3), (64, 2), (66, 3), (67, 3), (81, 1))
 #skiplist(values)
 ```

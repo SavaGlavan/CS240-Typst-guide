@@ -1,6 +1,6 @@
 #let title = [Typst for CS240]
 
-#set page("us-letter", numbering: "1")
+#set page("us-letter", numbering: "1", margin: (x: 2cm, y: 2cm))
 
 #show raw: it => block(
   fill: luma(230),

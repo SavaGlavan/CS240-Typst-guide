@@ -4,8 +4,8 @@ The raison d'etre of this document is to help its readers save time that would o
 
 This document is intended for 2 types of readers:
 
-+ People who are new to Typst and wish to learn how to use it.
-+ Existing Typst users.
++ People who are new to Typst and wish to learn how to use it as they take CS240.
++ Existing Typst users who are taking CS240.
 
 == For New Typst Users
 
