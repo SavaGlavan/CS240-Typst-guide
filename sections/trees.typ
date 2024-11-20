@@ -1,86 +1,95 @@
 = Trees
-#import "@preview/cetz:0.2.2": *
+#import "@preview/cetz:0.3.1": *
 #import "@preview/diagraph:0.3.0": *
+#import "@preview/fletcher:0.5.2" as fletcher: *
 
 == Binary tree
 Using the #link("https://typst.app/universe/package/cetz/")[*cetz*] package we can draw binary trees:
 
 ```typst
-#canvas(length: 1cm, {
+#canvas({
   import draw: *
 
-  set-style(content: (padding: .2),)
-
+  let data = ([5], ([3], [1], [2]), ([7], [6]))
   tree.tree(
-    (
-      [$8$], // root node
-      (
-        [$5$],
-        (
-          [$4$],
-          (
-            [$2$],
-          ),
-        ),
-        (
-          [$1$],
-        ),
-    ),
-      (
-        [$7$],
-        (
-          [$6$],
-        ),
-        (
-          [$3$],
-        ),
-      ),
+    data,
+    draw-node: (node, ..) => {
+      content((), text(black, [#node.content]))
+    },
+    draw-edge: (from, to, ..) => {
+      let (a, b) = (from + ".center", to + ".center")
+      line((a, .4, b), (b, .4, a))
+    }
   )
-)
 })
 ```
-Which creates the following binary tree:
-#canvas(length: 1cm, {
+#canvas({
   import draw: *
 
-  set-style(content: (padding: .2),
-    fill: gray.lighten(70%),
-    )
-
+  let data = ([5], ([3], [1], [2]), ([7], [6]))
   tree.tree(
-    (
-      [$8$],
-      (
-        [$5$],
-        (
-          [$4$],
-          (
-            [$2$],
-          ),
-        ),
-        (
-          [$1$],
-        ),
-    ),
-      (
-        [$7$],
-        (
-          [$6$],
-        ),
-        (
-          [$3$],
-        ),
-      ),
+    data,
+    draw-node: (node, ..) => {
+      content((), text(black, [#node.content]))
+    },
+    draw-edge: (from, to, ..) => {
+      let (a, b) = (from + ".center", to + ".center")
+      line((a, .4, b), (b, .4, a))
+    }
   )
-)
 })
+Alternatively, and perhaps both easier and faster.
+We can use the #link("https://typst.app/universe/package/fletcher/")[*Fletcher*] package to create a function that automatically draws binary trees from an array like so:
+```typst
+#let binary_tree(values) = {
+  diagram(
+  // Draw the nodes
+    for i in range(0, int(calc.log(values.len(), base: 2)) + 1){
+      for j in range(calc.min(values.len() - 1, calc.pow(2, i) - 1), calc.min(values.len(), calc.pow(2, i + 1) - 1)){
+        node(((calc.pow(2, calc.floor(calc.log(values.len(), base: 2)))/calc.pow(2, i + 1)) * (1 + 2 * (j + 1 - calc.pow(2, i))), i),
+          str(values.at(j)),
+          name: str(values.at(j)))
+      }
+    },
+  // Draw the edges
+    for i in range(1, int(calc.log(values.len(), base: 2)) + 1){
+      for j in range(calc.min(values.len() - 1, calc.pow(2, i) - 1), calc.min(values.len(), calc.pow(2, i + 1) - 1)){
+        edge(((calc.pow(2, calc.floor(calc.log(values.len(), base: 2)))/calc.pow(2, i + 1)) * (1 + 2 * (j + 1 - calc.pow(2, i))), i),
+          ((calc.pow(2, calc.floor(calc.log(values.len(), base: 2)))/calc.pow(2, i + 1)) * (2 * (calc.rem(j, 2) + j + 1 - calc.pow(2, i))), i - 1))
+      }
+    }
+  )
+}
+
+// This is all you need to modify, it is a binary tree as it would be stored in an array
+#let my_tree = (5, 3, 7, 1, 2, 6)
+
+#binary_tree(my_tree)
+```
+This produces the following tree:\
+#let binary_tree(values) = {
+  diagram(
+    for i in range(0, int(calc.log(values.len(), base: 2)) + 1){
+      for j in range(calc.min(values.len() - 1, calc.pow(2, i) - 1), calc.min(values.len(), calc.pow(2, i + 1) - 1)){
+        node(((calc.pow(2, calc.floor(calc.log(values.len(), base: 2)))/calc.pow(2, i + 1)) * (1 + 2 * (j + 1 - calc.pow(2, i))), i),
+          str(values.at(j)),
+          name: str(values.at(j)))
+      }
+    },
+    for i in range(1, int(calc.log(values.len(), base: 2)) + 1){
+      for j in range(calc.min(values.len() - 1, calc.pow(2, i) - 1), calc.min(values.len(), calc.pow(2, i + 1) - 1)){
+        edge(((calc.pow(2, calc.floor(calc.log(values.len(), base: 2)))/calc.pow(2, i + 1)) * (1 + 2 * (j + 1 - calc.pow(2, i))), i),
+          ((calc.pow(2, calc.floor(calc.log(values.len(), base: 2)))/calc.pow(2, i + 1)) * (2 * (calc.rem(j, 2) + j + 1 - calc.pow(2, i))), i - 1))
+      }
+    }
+  )
+}
+#let my_tree = (5, 3, 7, 1, 2, 6)
+#binary_tree(my_tree)
 #pagebreak()
 == AVL tree
 We can use the #link("https://typst.app/universe/package/diagraph/")[*diagraph*] package to draw AVL trees:
 ```typst
-// import the diagraph package
-#import "@preview/diagraph:0.3.0": *
-
 // create a template for our nodes that will allow us to have value and balance
 #let node(val, bal) = {
   table(
@@ -170,7 +179,7 @@ Creates the following AVL tree:
             )
           )
 
-There is likely a prettier way to this with cetz instead of diagraph.
+There is likely a prettier way to this with cetz or fletcher instead of diagraph.
 #pagebreak()
 == Tries
 To draw tries we will once again make use of the #link("https://typst.app/universe/package/diagraph/")[*diagraph*] package.
@@ -250,7 +259,7 @@ Which creates the following trie:
       H: [011\$]
     )
   )
-There is likely a prettier way to this with cetz instead of diagraph.
+There is likely a prettier way to this with cetz or fletcher instead of diagraph.
 #pagebreak()
 == Quadtree
 Consider the following grid:
@@ -270,39 +279,56 @@ Consider the following grid:
 })
 If we wished to draw a quadtree for the points in the grid, we would make use of the #link("https://typst.app/universe/package/cetz/")[*cetz*] package like so:
 ```typst
-#import "@preview/cetz:0.2.2": *
 #canvas({
   import draw: *
-    set-style(content: (padding: .1))
-    tree.tree(([\[0, 4\), \[0, 4\)], // this is the root node
-      ([$c$]),
-      ([$nothing$]),
-      ([\[0, 2\), \[0, 2\)],
-        [$nothing$],
-        [$b$],
-        [$a$],
-        [$nothing$],),
-      ([$nothing$]),
-    ),
-      spread: .75, // spread controls how wide each child spreads from its parent
-      grow: 2) // grow controls how far each child is from its parent
-    })
+
+  let data = ([\[0, 4\), \[0, 4\)],
+                ([c]),
+                ([$nothing$]),
+                ([\[0, 2\), \[0, 2\)],
+                  [$nothing$],
+                  [b],
+                  [a],
+                  [$nothing$]),
+                ([$nothing$]),)
+  tree.tree(
+    data,
+    draw-node: (node, ..) => {
+      content((), text(black, [#node.content]))
+    },
+    draw-edge: (from, to, ..) => {
+      let (a, b) = (from + ".center", to + ".center")
+      line((a, .4, b), (b, .4, a))
+    },
+    spread: .75, //controls how far apart nodes spread from each other
+    grow: 2 // controls how for down nodes spread from each other
+  )
 })
+
 ```
 Which outputs the following tree:
 #canvas({
   import draw: *
-    set-style(content: (padding: .1))
-    tree.tree(([\[0, 4\), \[0, 4\)],
-      ([$c$]),
-      ([$nothing$]),
-      ([\[0, 2\), \[0, 2\)],
-        [$nothing$],
-        [$b$],
-        [$a$],
-        [$nothing$],),
-      ([$nothing$]),
-    ),
-      spread: .75,
-      grow: 2)
+
+  let data = ([\[0, 4\), \[0, 4\)],
+                ([c]),
+                ([$nothing$]),
+                ([\[0, 2\), \[0, 2\)],
+                  [$nothing$],
+                  [b],
+                  [a],
+                  [$nothing$]),
+                ([$nothing$]),)
+  tree.tree(
+    data,
+    draw-node: (node, ..) => {
+      content((), text(black, [#node.content]))
+    },
+    draw-edge: (from, to, ..) => {
+      let (a, b) = (from + ".center", to + ".center")
+      line((a, .4, b), (b, .4, a))
+    },
+    spread: .75,
+    grow: 2
+  )
 })
