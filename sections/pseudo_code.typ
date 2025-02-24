@@ -3,7 +3,7 @@
 For writing pseudocode, I recommend using the #link("https://typst.app/universe/package/algo/")[algo] package.
 Here is a basic example of using algo from the package's documentation:
 ```typst
-  #import "@preview/algo:0.3.3": *
+  #import "@preview/algo:0.3.4": *
   #algo(
     title: "Fib",
     parameters: ("n",)
@@ -18,7 +18,7 @@ Here is a basic example of using algo from the package's documentation:
 
 The output from the code will look like this:
 
-#import "@preview/algo:0.3.3": *
+#import "@preview/algo:0.3.4": *
 #algo(
   title: "Fib",
   parameters: ("n",)

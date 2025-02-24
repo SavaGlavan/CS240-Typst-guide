@@ -3,7 +3,7 @@
 The following is a function to automatically draw skip lists from an array of values using the #link("https://typst.app/universe/package/cetz/")[*cetz*] package:
 
 ```typst
-#import "@preview/cetz:0.2.2": *
+#import "@preview/cetz:0.3.2": *
 #let skiplist(values) = {
   canvas({
       import draw: *
@@ -52,7 +52,7 @@ The following is a function to automatically draw skip lists from an array of va
 
 The output from the code will look like this:
 
-#import "@preview/cetz:0.2.2": *
+#import "@preview/cetz:0.3.2": *
 #let skiplist(values) = {
   canvas({
       import draw: *
